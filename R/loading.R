@@ -15,6 +15,7 @@ names(files_list) <- fnames$name
 
 df <- files_list %>%
   bind_rows(.id = "flight_pigeon") %>%
-  separate(flight_pigeon, into = c("flight", "pigeon"))
+  separate(flight_pigeon, into = c("flight", "pigeon")) %>%
+  select(flight, pigeon, time = `#t(centisec)`, x = `X(m)`, y = `Y(m)`, z = `Z(m)`)
 
 
