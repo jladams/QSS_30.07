@@ -35,13 +35,13 @@ ggplot(ff1_a, aes(x = x, y = y, size = z)) +
 saveVideo({
   for(i in unique(ff2$time)[1:1000]){
     print(
-      ggplot(data = subset(ff2, (time <= i)), aes(x = x, y = y, color = pigeon)) +
+      ggplot(data = subset(ff2, (time <= i & time >= (i-1000))), aes(x = x, y = y, color = pigeon)) +
         geom_point(data = subset(ff1, (time == i))) +
         geom_path() +
         coord_fixed(ratio = 1)
     )
   }
-}, interval = .1, video.name = "ff2_1000.mp4")
+}, interval = .01, video.name = "output/mp4/ff2_timed.mp4")
 
 
 saveVideo({
@@ -49,8 +49,6 @@ saveVideo({
     scatterplot3d(ff2$x[i], ff2$y[i], ff2$z[i], pch = 8)
   }
 }, interval = .1)
-
-
 
 
 saveVideo({
@@ -68,30 +66,6 @@ saveVideo({
     )
   }
 }, interval = .1)
-
-
-ff1 <- df %>%
-  filter(flight == "ff1") %>%
-  left_join(pigeoncolors) %>%
-  arrange(time)
-
-ff3 <- df %>%
-  filter(flight == "ff3") %>%
-  left_join(pigeoncolors)
-
-hf1 <- df %>%
-  filter(flight == "hf1") %>%
-  left_join(pigeoncolors)
-
-
-ggplot(ff3, aes(x = x, y = y, color = pigeon)) +
-  geom_path() +
-  coord_fixed(ratio = 1)
-
-ggplot(hf1, aes(x = x, y = y, color = pigeon)) +
-  geom_path() +
-  coord_fixed(ratio = 1)
-
 
 
 
