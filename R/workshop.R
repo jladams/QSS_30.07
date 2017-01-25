@@ -69,6 +69,9 @@ ggplot(data = gapminder, aes(x = gdpPercap, y = lifeExp)) +
   geom_point()
 
 # Let's bring in a little color
+ggplot(data = gapminder, aes(x = gdpPercap, y = lifeExp, color = continent)) + 
+  geom_point()
+
 ggplot(data = gapminder, aes(x = year, y = lifeExp, color=continent)) +
   geom_point()
 
@@ -91,8 +94,8 @@ ggplot(data = gapminder, aes(x = gdpPercap, y = lifeExp, color=continent)) +
   geom_point()
 
 # Hard to see relationship among points because of outliers, so let's adjust the scale
-ggplot(data = gapminder, aes(x = gdpPercap, y = lifeExp)) +
-  geom_point(alpha = 0.5) + 
+ggplot(data = gapminder, aes(x = gdpPercap, y = lifeExp, color = continent)) +
+  geom_point() + 
   scale_x_log10()
 
 # LET'S TALK PIGEONS
@@ -117,6 +120,9 @@ library(animation)
 
 # Plot pigeons from above using ggplot
 ggplot(ff2, aes(x = x, y = y, color = pigeon)) +
+  geom_point()
+
+ggplot(ff2, aes(x = x, y = y, color = pigeon)) +
   geom_path()
 
 ggplot(ff2, aes(x = x, y = y, color = pigeon)) +
@@ -134,13 +140,13 @@ plot_ly(ff2, x = ~x, y = ~y, z = ~time, type = "scatter3d", mode = "lines",
         color = ~pigeon)
 
 # Animate some of the frames
-saveVideo({
+saveGIF({
   for(i in unique(ff2$time)[10000:10100]){
     print(
       ggplot(data = subset(ff2, (time <= i & time >= (i-1000))), aes(x = x, y = y, color = pigeon)) +
-        geom_point(data = subset(ff1, (time == i))) +
+        geom_point(data = subset(ff2, (time == i))) +
         geom_path() +
         coord_fixed(ratio = 1)
     )
   }
-}, interval = .1, video.name = "output/mp4/ff2_workshop.mp4")
+}, interval = .1)
