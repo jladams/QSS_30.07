@@ -47,6 +47,9 @@ year_country_gdp_euro <- gapminder %>%
   filter(continent=="Europe") %>%
   select(year,country,gdpPercap)
 
+# You can also subset/filter with the subset function from base R. dplyr is just handy in that it fits neatly with the pipe syntax
+gapminder_euro <- subset(gapminder, continent == "Europe")
+
 # Manipulating with tidyr
 gap_united <- gapminder %>%
   unite(col = continent_country, continent, country)
@@ -55,8 +58,44 @@ gap_separated <- gap_united %>%
   separate(col = continent_country, into = c("continent", "country"), sep = "_")
 
 # Plotting with ggplot
+ggplot(data = gapminder, aes(x = gdpPercap, y = lifeExp)) +
+  geom_point()
 
+# Base plot
+ggplot(data = gapminder, aes(x = gdpPercap, y = lifeExp))
 
+# CHALLENGE: Modify the example so that it shows how life expectancy has changed over time
+ggplot(data = gapminder, aes(x = gdpPercap, y = lifeExp)) + 
+  geom_point()
+
+# Let's bring in a little color
+ggplot(data = gapminder, aes(x = year, y = lifeExp, color=continent)) +
+  geom_point()
+
+# Lines instead of points
+ggplot(data = gapminder, aes(x=year, y=lifeExp, by=country, color=continent)) +
+  geom_line()
+
+# Demonstrate how we build things up by layers
+ggplot(data = gapminder, aes(x=year, y=lifeExp, by=country)) +
+  geom_line(aes(color=continent)) + 
+  geom_point()
+
+# Changing the order matters
+ggplot(data = gapminder, aes(x=year, y=lifeExp, by=country)) +
+  geom_point() +
+  geom_line(aes(color=continent))
+
+# We can also adjust axes, etc. - let's go back to our first example
+ggplot(data = gapminder, aes(x = gdpPercap, y = lifeExp, color=continent)) +
+  geom_point()
+
+# Hard to see relationship among points because of outliers, so let's adjust the scale
+ggplot(data = gapminder, aes(x = gdpPercap, y = lifeExp)) +
+  geom_point(alpha = 0.5) + 
+  scale_x_log10()
+
+# LET'S TALK PIGEONS
 # start by opening one file GRAPHICALLY to get options
 ff2_A <- read_delim("~/projects/QSS30.07/data/pigeonflocks_trajectories/ff2/ff2_A.txt", "\t", escape_double = FALSE, trim_ws = TRUE, skip = 18)
 
@@ -77,6 +116,9 @@ library(scatterplot3d)
 library(animation)
 
 # Plot pigeons from above using ggplot
+ggplot(ff2, aes(x = x, y = y, color = pigeon)) +
+  geom_path()
+
 ggplot(ff2, aes(x = x, y = y, color = pigeon)) +
   geom_path() +
   coord_fixed(ratio = 1)
