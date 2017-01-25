@@ -1,5 +1,4 @@
 library(tidyverse)
-library(stringr)
 
 files <- list.files("./data/pigeonflocks_trajectories", pattern = "*.txt", full.names = TRUE, recursive = TRUE)
 

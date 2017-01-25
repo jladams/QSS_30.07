@@ -3,13 +3,10 @@ source("./R/loading.R")
 
 library(RColorBrewer)
 library(plotly)
-library(gganimate)
 library(scatterplot3d)
 library(animation)
 
 color <- grDevices::colors()[grep('gr(a|e)y', grDevices::colors(), invert = T)]
-
-color <- RColorBrewer::brewer.pal()
 
 pigeoncolors <- data_frame(pigeoncolor = sample(color, 13)) %>%
   mutate(pigeon = unique(df$pigeon))
@@ -24,16 +21,13 @@ ggplot(ff2, aes(x = x, y = y, color = pigeon)) +
   coord_fixed(ratio = 1)
 
 
-plot_ly(ff2, x = ~x, y = ~y, z = ~z, type = "scatter3d", mode = "lines",
+plot_ly(ff2, x = ~x, y = ~y, z = ~time, type = "scatter3d", mode = "lines",
              color = ~pigeon, colors = ~pigeoncolor)
 
 scatterplot3d(ff2$x, ff2$y, ff2$z, pch = 8)
 
-ggplot(ff1_a, aes(x = x, y = y, size = z)) +
-  geom_point()
-
 saveVideo({
-  for(i in unique(ff2$time)[1:1000]){
+  for(i in unique(ff2$time)[20001:25000]){
     print(
       ggplot(data = subset(ff2, (time <= i & time >= (i-1000))), aes(x = x, y = y, color = pigeon)) +
         geom_point(data = subset(ff1, (time == i))) +
@@ -41,7 +35,7 @@ saveVideo({
         coord_fixed(ratio = 1)
     )
   }
-}, interval = .01, video.name = "output/mp4/ff2_timed.mp4")
+}, interval = .1, video.name = "output/mp4/ff2_timed_5.mp4")
 
 
 saveVideo({
